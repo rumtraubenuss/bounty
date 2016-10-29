@@ -16,7 +16,7 @@ const ITEM_DEACTIVATE = 'itemDeActivate';
 function getItem(row, col) {
   const x = 0 + (itemW + itemP) * col;
   const y = 0 + (itemH + itemP) * row;
-  return { x, y, active: false }
+  return { x, y, active: false, color: '#FF0000' }
 }
 
 function getGrid(countRows = 10, countCols = 10) {
@@ -98,7 +98,10 @@ class App extends Component {
     const styleCanvas = { backgroundColor: 'red', width: `${canvasW}px`, height: `${canvasH}px` };
     const propsGrid = {
       grid, countRows: this.state.inputRows, countCols: this.state.inputCols,
-      pixelSize: 3, padding: 0 };
+      pixelSize: 3, padding: 0,
+      onCanvasDown: this.handleCanvasDown, onCanvasUp: this.handleCanvasUp,
+      onItemDown: this.handleItemDown, onItemEnter: this.handleItemEnter
+    };
     return (
       <div className="App">
         <input id="inputRows" value={this.state.inputRows} onChange={this.setGrid} type="text"/>
