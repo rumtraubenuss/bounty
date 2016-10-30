@@ -1,22 +1,17 @@
 import React, { Component } from 'react';
 import './App.css';
-import rRepeat from 'ramda/src/repeat';
-import rFlatten from 'ramda/src/flatten';
 import Grid from './Grid';
 
-let grid = [];
 const gridDefaultRows = 10;
 const gridDefaultCols = 30;
 const ITEM_ACTIVATE = 'itemActivate';
 const ITEM_DEACTIVATE = 'itemDeActivate';
 
 function getGrid(countRows = 10, countCols = 10) {
-  grid = rRepeat([], countRows).map((row, idxRow) => {
-    return rRepeat([], countCols).map((col, idxCol) => {
-      return { active: false, color: '#FF0000' }
-    });
-  });
-  grid = rFlatten(grid);
+  const grid = [];
+  for(let n = 0; n < countRows * countCols; n++) {
+    grid.push({ active: false, color: '#FF0000' });
+  }
   return grid;
 }
 
@@ -74,13 +69,13 @@ class App extends Component {
 
   render() {
     const propsGridEditor = {
-      grid, countRows: this.state.inputRows, countCols: this.state.inputCols,
+      grid: this.state.grid, countRows: this.state.inputRows, countCols: this.state.inputCols,
       pixelSize: 20, padding: 1,
       onCanvasDown: this.handleCanvasDown, onCanvasUp: this.handleCanvasUp,
       onItemDown: this.handleItemDown, onItemEnter: this.handleItemEnter
     };
     const propsGridPreview = {
-      grid, countRows: this.state.inputRows, countCols: this.state.inputCols,
+      grid: this.state.grid, countRows: this.state.inputRows, countCols: this.state.inputCols,
       pixelSize: 3, padding: 0
     };
     return (
