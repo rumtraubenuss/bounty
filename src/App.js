@@ -5,24 +5,15 @@ import rFlatten from 'ramda/src/flatten';
 import Grid from './Grid';
 
 let grid = [];
-const itemW = 20;
-const itemH = 20;
-const itemP = 1;
 const gridDefaultRows = 10;
 const gridDefaultCols = 30;
 const ITEM_ACTIVATE = 'itemActivate';
 const ITEM_DEACTIVATE = 'itemDeActivate';
 
-function getItem(row, col) {
-  const x = 0 + (itemW + itemP) * col;
-  const y = 0 + (itemH + itemP) * row;
-  return { x, y, active: false, color: '#FF0000' }
-}
-
 function getGrid(countRows = 10, countCols = 10) {
   grid = rRepeat([], countRows).map((row, idxRow) => {
     return rRepeat([], countCols).map((col, idxCol) => {
-      return getItem(idxRow, idxCol);
+      return { active: false, color: '#FF0000' }
     });
   });
   grid = rFlatten(grid);
@@ -82,38 +73,25 @@ class App extends Component {
   }
 
   render() {
-    const items = this.state.grid.map(({ x, y, active }, idx) => {
-      const col = active ? '#FFFFFF' : '#000000';
-      const style = { fill: col, border: 1 };
-      return (
-        <rect
-          onMouseDown={this.handleItemDown} onMouseEnter={this.handleItemEnter}
-          style={style} id={idx} key={idx}
-          x={x} y={y} width={itemW} height={itemH}
-        />
-      )
-    });
-    const canvasW = this.state.inputCols * (itemW + itemP) - itemP;
-    const canvasH = this.state.inputRows * (itemH + itemP) - itemP;
-    const styleCanvas = { backgroundColor: 'red', width: `${canvasW}px`, height: `${canvasH}px` };
-    const propsGrid = {
+    const propsGridEditor = {
       grid, countRows: this.state.inputRows, countCols: this.state.inputCols,
-      pixelSize: 3, padding: 0,
+      pixelSize: 20, padding: 1,
       onCanvasDown: this.handleCanvasDown, onCanvasUp: this.handleCanvasUp,
       onItemDown: this.handleItemDown, onItemEnter: this.handleItemEnter
+    };
+    const propsGridPreview = {
+      grid, countRows: this.state.inputRows, countCols: this.state.inputCols,
+      pixelSize: 3, padding: 0
     };
     return (
       <div className="App">
         <input id="inputRows" value={this.state.inputRows} onChange={this.setGrid} type="text"/>
         <input id="inputCols" value={this.state.inputCols} onChange={this.setGrid} type="text"/>
-        <Grid {...propsGrid} />
         <p>
-          <svg
-            onMouseDown={this.handleCanvasDown} onMouseUp={this.handleCanvasUp}
-            style={styleCanvas} xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 ${canvasW} ${canvasH}`}
-          >
-            {items}
-          </svg>
+          <Grid {...propsGridEditor} />
+        </p>
+        <p>
+          <Grid {...propsGridPreview} />
         </p>
       </div>
     );
