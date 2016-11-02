@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Grid from './Grid';
+import ColorPalette from './ColorPalette';
 
 const gridDefaultRows = 10;
 const gridDefaultCols = 30;
@@ -87,6 +88,9 @@ class App extends Component {
         </p>
         <p>
           <Grid {...propsGridPreview} />
+        </p>
+        <p>
+          <ColorPalette/>
         </p>
       </div>
     );
