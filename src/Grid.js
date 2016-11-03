@@ -3,27 +3,25 @@ import React, { Component } from 'react';
 function renderItems(items, rows, cols, size, padding, onItemDown, onItemEnter) {
   rows = parseInt(rows, 10);
   cols = parseInt(cols, 10);
-  const tmpItems = [];
   let [currentRow, currentCol] = [0,0];
-  for(let i = 0; i < rows * cols; i++) {
+  return items.map((item, idx) => {
     const x = 0 + (size + padding) * currentCol;
     const y = 0 + (size + padding) * currentRow;
-    const color = items[i].active ? items[i].color : '#000000';
+    const color = item.active ? item.color : '#000000';
     const style = { fill: color, border: 1 };
-    tmpItems.push(
-      <rect
-        onMouseDown={onItemDown} onMouseEnter={onItemEnter}
-        style={style} id={i} key={i}
-        x={x} y={y} width={size} height={size}
-      />
-    );
     currentCol++;
     if(currentCol === cols) {
       currentCol = 0;
       currentRow++;
     }
-  }
-  return tmpItems;
+    return (
+      <rect
+        onMouseDown={onItemDown} onMouseEnter={onItemEnter}
+        style={style} id={idx} key={idx}
+        x={x} y={y} width={size} height={size}
+      />
+    );
+  });
 }
 
 class Grid extends Component {
