@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Grid from './Grid';
 import ColorPalette from './ColorPalette';
+import { connect } from 'react-redux';
 
 const gridDefaultRows = 10;
 const gridDefaultCols = 30;
@@ -59,9 +60,11 @@ class App extends Component {
   }
 
   changeItem = (target, action) => {
+    const { currentColor } = this.props;
     const grid = [...this.state.grid];
     if(action === ITEM_ACTIVATE) {
       grid[parseInt(target.id, 10)].active = true;
+      grid[parseInt(target.id, 10)].color = currentColor;
     } else {
       grid[parseInt(target.id, 10)].active = false;
     }
@@ -83,18 +86,18 @@ class App extends Component {
       <div className="App">
         <input id="inputRows" value={this.state.inputRows} onChange={this.setGrid} type="text"/>
         <input id="inputCols" value={this.state.inputCols} onChange={this.setGrid} type="text"/>
-        <p>
-          <Grid {...propsGridEditor} />
-        </p>
-        <p>
-          <Grid {...propsGridPreview} />
-        </p>
-        <p>
-          <ColorPalette/>
-        </p>
+        <p><Grid {...propsGridEditor} /></p>
+        <p><Grid {...propsGridPreview} /></p>
+        <p><ColorPalette /></p>
       </div>
     );
   }
 }
 
-export default App;
+function select(state) {
+  return {
+    currentColor: state.color.currentColor,
+  }
+}
+
+export default connect(select)(App);
