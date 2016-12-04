@@ -11,3 +11,10 @@ export function color(state = colorInitState, action) {
     default: return state;
   }
 }
+
+const toolInitState = {
+  currentTool: 'DRAW',
+};
+export function tool(state = toolInitState, action) {
+  return state;
+}
