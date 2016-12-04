@@ -60,9 +60,9 @@ class App extends Component {
   }
 
   changeItem = (target, action) => {
-    const { currentColor } = this.props;
+    const { currentColor, currentTool } = this.props;
     const grid = [...this.state.grid];
-    if(action === ITEM_ACTIVATE) {
+    if(currentTool === 'DRAW') {
       grid[parseInt(target.id, 10)].active = true;
       grid[parseInt(target.id, 10)].color = currentColor;
     } else {
@@ -97,6 +97,7 @@ class App extends Component {
 function select(state) {
   return {
     currentColor: state.color.currentColor,
+    currentTool: state.tool.currentTool,
   }
 }
 
