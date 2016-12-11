@@ -3,6 +3,7 @@ import './App.css';
 import Grid from './Grid';
 import ColorPalette from './ColorPalette';
 import { connect } from 'react-redux';
+import { Map, List } from 'immutable';
 
 const gridDefaultRows = 10;
 const gridDefaultCols = 30;
@@ -27,6 +28,12 @@ class App extends Component {
       mouseDown: false,
       itemStartAction: undefined,
     };
+  }
+
+  componentDidMount() {
+    const list = List(Array(gridDefaultRows * gridDefaultCols)).map(() => {
+      return Map({ active: false, color: '#FF0000' });
+    });
   }
 
   setGrid = ({ target, target: { value } }) => {
@@ -98,6 +105,7 @@ function select(state) {
   return {
     currentColor: state.color.currentColor,
     currentTool: state.tool.currentTool,
+    grid: state.grid.grid,
   }
 }
 
